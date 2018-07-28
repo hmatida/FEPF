@@ -1,0 +1,119 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="header">
+          <h4 class="title">Programação</h4>
+          <p class="category">Efetue aqui os lançamentos de despesas e receitas</p>
+        </div>
+        <div class="content">
+          Form value: {{ formCadPreLaunches.value | json }}
+          <form [formGroup]="formCadPreLaunches" novalidates (ngSubmit)="save(formCadPreLaunches.value)">
+
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-6">
+
+                <div formGroupName="provider">
+                  <div class="form-group">
+                    <label>Empresa</label>
+                    <select class="form-control border-input" formControlName="id_provider" (change)="setSubcategoryByProvider()">
+                      <option *ngFor="let pro of providers" [value]="pro.id_provider">{{pro.name_provider}} </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label>Tipo de lançamento</label>
+                  <select class="form-control border-input" formControlName="typeOfLaunch">
+                    <option value="C">Entrada</option>
+                    <option value="S">Saída</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-8">
+                <div formGroupName="subCategory">
+                  <div class="form-group">
+                    <label>Categoria</label>
+                    <select class="form-control border-input" formControlName="id_subCategory">
+                      <option *ngFor="let cat of subCategories" [value]="cat.id_subCategory">{{cat.subCategoryName}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3"></div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-8">
+                <div class="form-group">
+                  <label>Descrição</label>
+                  <input type="text" class="form-control border-input" formControlName="description" placeholder="Detalhes da transação">
+                </div>
+              </div>
+              <div class="col-md-3"></div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Vencimento</label>
+                  <input type="date" class="form-control border-input" formControlName="dt_exp" #Dt_exp placeholder="Somente números">
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label>Valor</label>
+                  <input type="text" [textMask]="{mask: numberMask}" class="form-control border-input" #Value formControlName="value" placeholder="Final">
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div *ngIf="formCadPreLaunches.valid">
+                    <div class="btn btn-info btn-fill btn-wd" (click)="isParcelar()">Parcelar</div>
+                </div>
+              </div>
+              <div *ngIf="!parcelar == false">
+
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <label>Nro parcelas</label>
+                    <input type="number" class="form-control border-input" #nParcelas >
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div>
+                      <div class="btn btn-info btn-fill btn-wd" (click)="setParcelas(nParcelas.value, Value.value, Dt_exp.value)">Criar parcelas</div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div *ngIf="nroParcelas > 0" >
+              <div *ngFor="let p of parcelas">
+                <app-plots [id]="p.id_plot" [valor]="p.value" [vecto]="p.vcto" (eve)="delPlots($event)"></app-plots>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="text-center">
+                <button type="submit" [disabled]="!formCadPreLaunches.valid" class="btn btn-info btn-fill btn-wd">Salvar</button>
+                <a>
+                  <button type="reset" class="btn btn-warning btn-fill btn-wd" (click)="resetForm(formCadPreLaunches.value)">Limpar</button>
+                </a>
+              </div>
+            </div>
+
+            <div class="clearfix"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

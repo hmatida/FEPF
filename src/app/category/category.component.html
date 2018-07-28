@@ -1,0 +1,148 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="header">
+          <h4 class="title">Cadastro de categorias</h4>
+          <p class="category">Cadastre as categorias que deseja classificar seus lançamentos</p>
+        </div>
+        <div class="content">
+          <form [formGroup]="formCadCategory" novalidate (ngSubmit)="saveCategory(formCadCategory.value)">
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-10">
+                <div class="form-group">
+                  <label>Nome</label>
+                  <input type="text" class="form-control border-input is-invalid" formControlName="name_category" placeholder="Dê um nome a categoria">
+                </div>
+              </div>
+              <div class="col-md-1"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-8">
+                <div class="form-group">
+                  <label>Tipo de conta</label>
+                  <select class="form-control border-input" formControlName="typeOfLaunch">
+                    <option value="C">Entrada</option>
+                    <option value="S">Saída</option>
+                    <option value="T">Transferência</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3"></div>
+            </div>
+            <div class="row">
+              <br/>
+              <div class="text-center">
+                <button type="submit" [disabled]="!formCadCategory.valid" class="btn btn-info btn-fill btn-wd">Salvar</button>
+                <a>
+                  <button type="reset" class="btn btn-warning btn-fill btn-wd" (click)="resetCategoryForm()">Limpar</button>
+                </a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="header">
+          <h4 class="title">Sub-categorias</h4>
+          <p class="category">Aqui você cadastra as sub-categorias para classificar seus lançamentos</p>
+        </div>
+        <div class="content">
+          <form [formGroup]="formCadSubCategory" novalidate (ngSubmit)="saveSubCategory(formCadSubCategory.value)">
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-8">
+                <div formGroupName="category">
+                  <div class="form-group">
+                    <label>Sub-categoria de</label>
+                    <select class="form-control border-input" formControlName="id_category">
+                      <option *ngFor="let cat of categories" [value]="cat.id_category">{{cat.name_category}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-10">
+                <div class="form-group">
+                  <label>Nome sub-categoria</label>
+                  <input type="text" class="form-control border-input is-invalid" formControlName="subCategoryName" placeholder="Nome da sub-categoria">
+                </div>
+              </div>
+              <div class="col-md-1"></div>
+            </div>
+            <div class="row">
+              <br/>
+              <div class="text-center">
+                <button type="submit" [disabled]="!formCadSubCategory.valid" class="btn btn-info btn-fill btn-wd">Salvar</button>
+                <a>
+                  <button type="reset" class="btn btn-warning btn-fill btn-wd" (click)="resetSubCategoryForm()">Limpar</button>
+                </a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="header">
+          <h4 class="title">Categorias e sub-categorias cadastradas</h4>
+          <p class="category">Cadastre as categorias que deseja classificar seus lançamentos</p>
+        </div>
+        <div class="content">
+          <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-7">
+              <h5>Descrição categoria</h5>
+            </div>
+            <div class="col-md-4">
+              <h5>Tpo lcto</h5>
+            </div>
+          </div>
+          <hr/>
+          <div *ngFor="let cat of categories">
+            <div class="row">
+              <div class="col-md-2"></div>
+              <div class="col-md-6">
+                <div>
+                  <a class="botao" (click)="editCategory(cat)">
+                  <p>{{cat.name_category}}</p>
+                </a>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <p *ngIf="cat.typeOfLaunch == 'C'" >Entrada </p>
+                <p *ngIf="cat.typeOfLaunch == 'S'" >Saída </p>
+                <p *ngIf="cat.typeOfLaunch == 'T'" >Transferência </p>
+              </div>
+            </div>
+            <blockquote>
+            <div *ngFor="let sub of subCategories">
+              
+              <div class="row" *ngIf="sub.category.id_category == cat.id_category">
+                <div class="col-md-4"></div>
+                <div class="col-md-7">
+                  <a class="botao" (click)="editSubCategory(sub)">
+                  <h6>{{sub.subCategoryName}}</h6>
+                </a>
+                </div>
+                <div class="col-md-3"></div>
+              </div>
+           
+            </div>
+          </blockquote>
+            <hr/>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6"></div>
+  </div>
+</div>

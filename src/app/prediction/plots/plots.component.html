@@ -1,0 +1,21 @@
+<div class="row">
+  <form [formGroup]="formCadPlots" novalidates>
+    <div class="col-md-1"></div>
+    <div class="col-md-3">
+      <div class="form-group">
+        <label>Vencimento</label>
+        <input type="date" class="form-control border-input" formControlName="vcto" (change)="updateDate()" placeholder="Somente números">
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="form-group">
+        <label>Valor da parcela</label>
+        <input type="number" class="form-control border-input" formControlName="value" (change)="updateValues()">
+      </div>
+    </div>
+    <div class="col-md-1">
+        <button type="null" class="btn btn-sm btn-danger btn-icon" (click)="delPlot()"><i class="ti-trash"></i></button>
+    </div>
+    <div class="col-md-4"></div>
+  </form>
+</div>

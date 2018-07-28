@@ -1,0 +1,77 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="header">
+          <h4 class="title">Cadastro de conta</h4>
+          <p class="category">Cadastramento de contas para movimentação</p>
+        </div>
+        <div class="content">
+          <form [formGroup]="formCadAccount" novalidate (ngSubmit)="saveAccount(formCadAccount.value)">
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-10">
+                <div class="form-group">
+                  <label>Nome</label>
+                  <input type="text" class="form-control border-input is-invalid" formControlName="name_account" placeholder="Dê um nome a sua conta"
+                    required>
+                </div>
+              </div>
+              <div class="col-md-1"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-8">
+                <div class="form-group">
+                  <label>Tipo de conta</label>
+                  <select class="form-control border-input" formControlName="typeOfAccount">
+                    <option value="CD">Cartão de crédito</option>
+                    <option value="CC">Conta Corrente</option>
+                    <option value="CP">Conta Poupança</option>
+                    <option value="CI">Conta Investimento</option>
+                    <option value="CT">Em Carteira</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-8">
+                <div class="form-group" *ngIf="getFlag() === true">
+                  <label>Saldo inicial</label>
+                  <input type="number" class="form-control border-input" formControlName="startBalance" placeholder="Somente números">
+                </div>
+              </div>
+              <div class="col-md-3"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-8">
+                <div class="form-group">
+                  <label>Limite</label>
+                  <input type="number" class="form-control border-input" formControlName="limite" placeholder="Somente números">
+                </div>
+              </div>
+              <div class="col-md-3"></div>
+            </div>
+            <div class="row">
+              <div class="text-center">
+                <button type="submit" [disabled]="!formCadAccount.valid" class="btn btn-info btn-fill btn-wd">Salvar</button>
+                <a>
+                  <button type="reset" class="btn btn-warning btn-fill btn-wd" (click)="resetForm(formCadAccount.value)">Limpar</button>
+                </a>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div *ngFor="let acc of accounts">
+        <app-account-details (accountOut)="editAccount($event)" [accInput]="acc"></app-account-details>
+      </div>
+    </div>
+  </div>
+</div>

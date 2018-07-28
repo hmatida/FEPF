@@ -1,0 +1,96 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-8 col-md-7">
+      <div class="card">
+        <div class="header">
+          <h4 class="title">Cadastro de Empresas</h4>
+        </div>
+        <div class="content">
+
+          <!-- Form value: {{ formCadProvider.value | json }} -->
+          <form [formGroup]="formCadProvider" novalidate (ngSubmit)="saveProvider(formCadProvider.value)">
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-10">
+                <div class="form-group">
+                  <label>Nome</label>
+                  <input type="text" class="form-control border-input is-invalid" formControlName="name_provider" placeholder="Nome da empresa"
+                    required>
+                </div>
+              </div>
+              <div class="col-md-1"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-8">
+                <div formGroupName="category">
+                  <div class="form-group">
+                    <label>Categoria</label>
+                    <select class="form-control border-input" (blur)="getAllSubCategoriesByCategories(formCadProvider.get('category').get('id_category').value)"
+                      formControlName="id_category" (click)="resetSubCategory()">
+                      <option *ngFor="let cat of categories" [value]="cat.id_category">{{cat.name_category}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-8">
+                <div formGroupName="subCategory">
+                  <div class="form-group">
+                    <label>Subcategoria</label>
+                    <select class="form-control border-input" formControlName="id_subCategory">
+                      <option *ngFor="let subCat of subCategories" [value]="subCat.id_subCategory">{{subCat.subCategoryName}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3"></div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row">
+              <br/>
+              <div class="text-center">
+                <button type="submit" [disabled]="!formCadProvider.valid" class="btn btn-info btn-fill btn-wd">Salvar</button>
+                <a>
+                  <button type="reset" class="btn btn-warning btn-fill btn-wd" (click)="resetForm(formCadProvider.value)">Limpar</button>
+                </a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-5">
+      <div class="card">
+        <div class="header">
+          <h4 class="title">Empresas Cadastradas</h4>
+          <p class="category">Here is a subtitle for this table</p>
+        </div>
+        <div class="content table-responsive table-full-width">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Empresa</th>
+                <th style="text-align: center">Visualizar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let pro of providers">
+                <td>{{pro.name_provider}}</td>
+                <td style="text-align: center" (click)="editProvider(pro)">
+                  <a class="btn btn-sm btn-success">
+                    <i class="ti-eye"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+
+    </div>
+  </div>

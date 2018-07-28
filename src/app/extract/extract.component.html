@@ -1,0 +1,108 @@
+<div class="container-fluid">
+  <div class="row">
+    Form value: {{ formPassFilters.value | json }}
+    <div class="col-md-12">
+      <div class="card">
+        <div class="header">
+        <h4 class="title">Extrato da conta {{principalAccount.name_account}}</h4>
+          <p class="category">Confira os valores lançados nos últimos {{periodo.value}} dias da</p>
+        </div>
+        <form [formGroup]="formPassFilters" novalidate (ngSubmit)="passFilter(formPassFilters.value)">
+          <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-3">
+              <div formGroupName="account">
+                <div class="form-group">
+                  <label>Conta</label>
+                  <select class="form-control border-input" formControlName="id_account">
+                    <option *ngFor="let acc of accounts" [value]="acc.id_account">{{acc.name_account}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <label>Período</label>
+                <select class="form-control border-input" #periodo formControlName="operation">
+                  <option value=0>Últimos 10 dias</option>
+                  <option value=1>Últimos 30 dias</option>
+                  <option value=2>Últimos 60 dias</option>
+                  <option value=3>Mês passado</option>
+                  <option value=4>Mês Atual</option>
+                  <option value=5>Personalizar</option>
+                </select>
+              </div>
+            </div>
+            <div *ngIf="periodo.value == 5">
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label>Data inicial</label>
+                  <input type="date" class="form-control border-input" formControlName="initDate">
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label>Data final</label>
+                  <input type="date" class="form-control border-input" formControlName="finalDate">
+                </div>
+              </div>
+            </div>
+           
+            <div class="col-xs-2">
+              <div *ngIf="formPassFilters.valid">
+                <a class="btn btn-sm btn-success btn-icon" (click)="passFilter(formPassFilters.value)">
+                    <i class="ti-search"></i></a>
+                </div>
+            </div>
+          </div>
+        </form>
+        <div class="content table-responsive table-full-width">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Empresa</th>
+                <th>Descrição</th>
+                <th>Sub-categoria</th>
+                <th>Entrada</th>
+                <th>Saída</th>
+                <th>Saldo</th>
+                <th>Opções</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let lc of launches">
+                <td>{{lc.dt | date: "dd/MM/yyyy" }}</td>
+                <td>{{lc.provider.name_provider}}</td>
+                <td>{{lc.description}}</td>
+                <td>{{lc.subCategory.subCategoryName}}</td>
+                  <td *ngIf="lc.typeOfLaunch == 'C'" >{{lc.pay_value | currency: 'BRL': true}}</td>
+                  <td *ngIf="lc.typeOfLaunch !== 'C'"> </td>
+                  <td *ngIf="lc.typeOfLaunch == 'S'" >{{lc.pay_value | currency: 'BRL': true}}</td>
+                  <td *ngIf="lc.typeOfLaunch !== 'S'"> </td>
+                  <td>{{lc.balance | currency: 'BRL': true}}</td>
+                  <td> 
+                    <button class="btn btn-sm btn-success btn-icon"><i class="ti-files"></i></button>
+                    <button class="btn btn-sm btn-warning btn-icon" (click)="changeLaunche(lc)" ><i class="ti-settings"></i></button>
+                    <button class="btn btn-sm btn-danger btn-icon" (click)="deleteLaunche(lc.id_launch)"><i class="ti-trash"></i></button>
+                  </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td><b>Totais</b></td>
+                <td><b>{{sumEntrada | currency: 'BRL': true}}</b></td>
+                <td><b>{{sumSaida | currency: 'BRL': true}}</b></td>
+                <td> </td>
+                <td> </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
